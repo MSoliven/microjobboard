@@ -9,9 +9,6 @@ const ContractSchema = new mongoose.Schema<CollectionTypes.Contract>({
   numberOfTerms: Number,
   timeRange: { type: String, enum: ['days', 'weeks', 'months', 'years'] },
   active: Boolean,
-
-  // ui state
-  stepperMode: { type: Boolean, default: false }
 });
 
 export default mongoose.model<CollectionTypes.Contract>('Contract', ContractSchema);

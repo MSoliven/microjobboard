@@ -1,4 +1,4 @@
-import { LeaseTimeRange, Locale, PaymentMethod, UserRole } from './index.js';
+import { ContractTimeRange, JobType, Locale, PaymentMethod, UserRole } from './index.js';
 
 export type MongooseDocument<T> = {
   __v: number;
@@ -90,25 +90,6 @@ export namespace CollectionTypes {
     currency: string;
   };
 
-  export type Document = {
-    _id: string;
-    realmId: string;
-    workerId: string;
-    contractId: string;
-    templateId: string;
-    type: 'text' | 'file';
-    name: string;
-    description: string;
-    mimeType?: string;
-    expiryDate?: Date;
-    contents?: Record<string, never>;
-    html?: string;
-    url?: string;
-    versionId?: string;
-    createdDate: Date;
-    updatedDate: Date;
-  };
-
   export type Email = {
     _id: string;
     templateName: string;
@@ -126,9 +107,8 @@ export namespace CollectionTypes {
     name: string;
     description: string;
     numberOfTerms: number;
-    timeRange: LeaseTimeRange;
+    timeRange: ContractTimeRange;
     active: boolean;
-    stepperMode: boolean;
   };
 
   export type Job = {
@@ -137,134 +117,38 @@ export namespace CollectionTypes {
     type: string;
     name: string;
     description: string;
-    surface: number;
-    phone: string;
-    digicode: string;
-    address: CollectionTypes.PartAddress;
-    price: number;
-
-    // TODO to remove, replaced by address
-    building: string;
-    level: string;
-    location: string;
-  };
-
-  export type Template = {
-    _id: string;
-    realmId: string;
-    name: string;
-    type: string;
-    description: string;
-    hasExpiryDate: boolean;
-    contents: Record<string, never>;
-    html: string;
-    linkedResourceIds: string[];
-    required: boolean;
-    requiredOnceContractTerminated: boolean;
-  };
-
-  export type PartRent = {
-    term: number;
-    total: {
-      preTaxAmount: number;
-      charges: number;
-      vat: number;
-      discount: number;
-      debts: number;
-      balance: number;
-      grandTotal: number;
-      payment: number;
-    };
-    preTaxAmounts:
-      | {
-          amount: number;
-          description: string;
-        }[]
-      | [];
-    charges:
-      | {
-          amount: number;
-          description: string;
-        }[]
-      | [];
-    debts:
-      | {
-          amount: number;
-          description: string;
-        }[]
-      | [];
-    discounts:
-      | {
-          origin: 'contract' | 'settlement';
-          amount: number;
-          description: string;
-        }[]
-      | [];
-    vats:
-      | {
-          origin: 'contract' | 'settlement';
-          amount: number;
-          description: string;
-          rate: number;
-        }[]
-      | [];
-    payments:
-      | {
-          date: string;
-          type: PaymentMethod;
-          reference: string;
-          amount: number;
-        }[]
-      | [];
-    description: string;
+    payRange: { min: number; max: number };
   };
 
   export type Worker = {
     _id: string;
     realmId: string | Realm;
     name: string;
-    isCompany: boolean;
-    company: string;
-    manager: string;
-    legalForm: string;
-    siret: string;
-    rcs: string;
-    capital: number;
     street1: string;
     street2: string;
     zipCode: string;
     city: string;
     country: string;
-    contacts: {
-      contact: string;
-      phone: string;
-      email: string;
-    }[];
-    reference: string;
+    phone: string;
+    email: string;    
     contract: string;
     contractId: string | Contract;
-    beginDate: Date;
-    endDate: Date;
-    terminationDate: Date;
+    skills: string[]; 
+    certifications: string[];
+    education: string;
+    experience: number;
+    expectedPayRange: { min: number; max: number };
+    references: { name: string; contact: string; relation: string }[];
+    socialProfiles?: { linkedIn?: string; github?: string; portfolio?: string };
+    ratings?: { score: number; reviews: string[] }; // Worker ratings and employer feedback
     jobs:
       | {
           jobId: string;
           job: CollectionTypes.Job;
-          rent: number;
-          expenses: [
-            { title: string; amount: number; beginDate: Date; endDate: Date }
-          ];
-          entryDate: Date;
-          exitDate: Date;
+          pay: number;
+          startDate: Date;
+          endDate: Date;
         }[]
       | [];
-    rents: PartRent[] | [];
-    isVat: boolean;
-    vatRatio: number;
-    discount: number;
-    guaranty: number;
-    guarantyPayback: number;
-
-    stepperMode: boolean;
   };
 }

@@ -1,8 +1,6 @@
 import {
-  LeaseStatus,
-  LeaseTimeRange,
-  PaymentMethod,
-  PaymentStatus
+  ContractStatus,
+  ContractTimeRange
 } from '../../common/index.js';
 import { CollectionTypes } from '../../common/collections.js';
 import { Locale } from '../../common/locales.js';
@@ -32,52 +30,16 @@ export type WorkerDataType = {
   };
   contract: {
     name: string;
-    beginDate: Date;
+    startDate: Date;
     endDate: Date;
     terminationDate?: Date;
-    timeRange: LeaseTimeRange;
-    status: LeaseStatus;
-    rent: {
-      totalPreTaxAmount: number;
-      totalChargesAmount: number;
-      totalVatAmount: number;
-      totalAmount: number;
-    };
-    remainingIterations: number;
-    remainingIterationsToPay: number;
+    timeRange: ContractTimeRange;
+    status: ContractStatus;
     jobs: {
       id: string;
       name: string;
       description: string;
       type: string;
     }[];
-    documents:
-      | {
-          name: string;
-          description: string;
-          url: string;
-        }[]
-      | [];
-    invoices:
-      | {
-          id: string;
-          term: number;
-          balance: number;
-          grandTotal: number;
-          payment: number;
-          payments:
-            | {
-                date: string;
-                method: string;
-                reference: string;
-                amount: number;
-              }[]
-            | [];
-          status: PaymentStatus;
-          methods: PaymentMethod[] | [];
-        }[]
-      | [];
-    balance: number;
-    deposit: number;
   };
 };
